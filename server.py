@@ -1,9 +1,9 @@
 import socket
-import threading
+import time
 
 PORT = 5050
 
-SIZE = 1024
+SIZE = 128
 DISCONNECT_MESSAGE = '!END'
 FORMAT = 'utf-8'
 SERVER = '192.168.137.1'
@@ -19,14 +19,26 @@ def main():
     server.bind(ADDR)
     server.listen()
     print(f"[LISTENING] The server is listening on {SERVER}")
-    connected = True
-    while connected:
-        conn, addr = server.accept()
-        # print(conn.recvfrom(65565))
+    conn, addr = server.accept()
+    while True:
         mes = conn.recv(SIZE).decode(FORMAT)
-        print(f'[CLIENT] {mes}')
-        connected = False
-        break
+        if not mes:
+            break
+        else:
+            print(f'Server Side: [CLIENT] {mes}')
+            
+        
+
+            # else:
+            #     print(f'Server Side: [CLIENT] {mes}')
+            #     connected = False
+            #     conn.shutdown(socket.SHUT_RDWR)
+            #     conn.close()
+            #     server.shutdown(socket.SHUT_RDWR)
+            #     server.close()
+            #     print('Server closed')
+            #     break
+
 
         # thread = threading.Thread(target = handle_client, args = (conn, addr))
         # thread.start()
