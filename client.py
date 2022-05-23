@@ -1,4 +1,5 @@
 import socket
+import time
 
 from sqlalchemy import false
 
@@ -9,10 +10,10 @@ PORT = 5050
 DISCONNECT_MESSAGE = '!END'
 ADDR = (IP, PORT)
 FORMAT = "utf-8"
-SIZE = 1024
+SIZE = 128
 
 def main():
-    connected = True
+    # time.sleep(0.3)
     """ Staring a TCP socket. """
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -39,15 +40,17 @@ def main():
     # """ Closing the file. """
     # file.close()
 
-    while connected:
-        u_inp = 'a'*1000
-        client.send(u_inp.encode(FORMAT))
-        connected = False
-        break
+    u_inp = 'a'*1000
+    client.sendall(u_inp.encode(FORMAT))
+    print("Data Sent by Client")
+    client.shutdown(socket.SHUT_RDWR)
+    client.close()
+    print('Client closed')
+
 
 
     """ Closing the connection from the server. """
-    client.close()
+    # print('Client closed')
 
 
 if __name__ == "__main__":
